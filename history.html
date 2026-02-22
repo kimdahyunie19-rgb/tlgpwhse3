@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TLGP WMS — System Logs</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-overlay">
+    <div class="login-card">
+        <div class="login-top">
+            <span class="icon">📦</span>
+            <h1>TLGP WMS</h1>
+            <p>WAREHOUSE MANAGEMENT SYSTEM</p>
+        </div>
+        <div class="login-body">
+            <div class="lf"><label>Email Address</label><input type="email" id="log-email" placeholder="user@company.com" autocomplete="off"></div>
+            <div class="lf"><label>Password</label><input type="password" id="log-pass" placeholder="••••••••"></div>
+            <p id="log-err">⚠ Invalid credentials. Please try again.</p>
+            <button class="login-btn" onclick="checkLogin()">LOGIN TO SYSTEM</button>
+        </div>
+        <div class="login-foot">AUTHORIZED PERSONNEL ONLY</div>
+    </div>
+</div>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+    <div class="sidebar-header">
+        <div class="sidebar-icon">📦</div>
+        <div><span class="brand">TLGP WMS</span><span class="ver">PRO v2.0</span></div>
+    </div>
+    <div class="sb-sec">
+        <span class="sb-lbl">NAVIGATION</span>
+        <a class="nav-btn" href="index.html">📦 &nbsp;INVENTORY LIST</a>
+        <a class="nav-btn" href="transfer.html">🚚 &nbsp;TRANSFER IN</a>
+        <a class="nav-btn active" href="history.html">📜 &nbsp;SYSTEM LOGS</a>
+    </div>
+    <div class="sb-bot">
+        <button class="btn-danger" onclick="mr()">⚠ MASTER RESET</button>
+    </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+    <div class="page-content">
+
+        <div class="page-header">
+            <div class="ph-left">
+                <h2>📜 SYSTEM LOGS</h2>
+                <span id="log-count" class="log-summary-badge">Loading...</span>
+            </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="log-filter-area">
+            <div class="lfg">
+                <label>Type</label>
+                <select id="log-type-filter" onchange="renderTimeline()">
+                    <option value="all">ALL TYPES</option>
+                    <option value="inc">TRANSFER IN</option>
+                    <option value="pull">PULL-OUTS</option>
+                    <option value="upd">UPDATES</option>
+                </select>
+            </div>
+            <div class="lfg"><label>Location</label><input type="text" id="log-loc-filter" placeholder="e.g. TRA0101" oninput="if(activeDR)renderTimeline()"></div>
+            <div class="lfg"><label>Item Code</label><input type="text" id="log-cod-filter" placeholder="e.g. ITEM123" oninput="if(activeDR)renderTimeline()"></div>
+            <div class="lfg"><label>Lot Number</label><input type="text" id="log-lot-filter" placeholder="e.g. LOT001" oninput="if(activeDR)renderTimeline()"></div>
+            <div class="lfg"><label>Quantity</label><input type="text" id="log-qty-filter" placeholder="e.g. 500" oninput="if(activeDR)renderTimeline()"></div>
+        </div>
+
+        <!-- Timeline Layout -->
+        <div class="timeline-layout">
+            <div class="date-sidebar">
+                <div class="date-sidebar-header">DATES</div>
+                <div id="date-list" class="date-list"></div>
+            </div>
+            <div class="detail-panel" id="log-detail">
+                <div class="no-logs">Select a date to view records.</div>
+            </div>
+        </div>
+
+    </div>
+</main>
+
+<script src="script.js"></script>
+<script>
+['log-email','log-pass'].forEach(id=>{
+    document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')checkLogin();});
+});
+</script>
+</body>
+</html>
